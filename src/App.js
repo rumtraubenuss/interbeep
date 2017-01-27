@@ -109,7 +109,7 @@ class App extends Component {
                 bsStyle="primary"
                 bsSize="large"
                 block
-                disabled={secsSelected === 0}
+                disabled={secsSelected === 0 || secsCurrent === 0}
               >{buttonStartStopLabel}</Button>
             </Col>
           </Row>
