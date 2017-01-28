@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import { Grid, Row, Col, Button, ButtonGroup } from 'react-bootstrap';
+import Sound from 'react-sound';
 
 class App extends Component {
   constructor(props) {
@@ -10,6 +11,7 @@ class App extends Component {
       secsCurrent: 10,
       running: false,
       timer: undefined,
+      beep: false,
     };
   }
 
@@ -24,25 +26,30 @@ class App extends Component {
   resetTime = () => {
     const { secsSelected } = this.state;
     if(this.state.running) {
+      //TODO Move to method
       clearInterval(this.state.timer);
-      this.setState({ timer: undefined, running: false });
+      this.setState({ timer: undefined, running: false, beep: 0 });
     }
     this.setState({ secsCurrent: secsSelected });
   }
 
   handleTick = () => {
     const secsNew = this.state.secsCurrent - 1;
-    if(secsNew === 0) {
-      clearInterval(this.state.timer);
-      this.setState({ timer: undefined, running: false });
+    if (secsNew === 0) {
+      this.playBeep();
+    }
+    if (secsNew === -1) {
+      this.setState({ secsCurrent: this.state.secsSelected });
+      return;
     }
     this.setState({ secsCurrent: secsNew });
   }
 
   handleStartStop = () => {
     if(this.state.running) {
+      //TODO Move to method
       clearInterval(this.state.timer);
-      this.setState({ timer: undefined, running: false });
+      this.setState({ timer: undefined, running: false, beep: 0 });
     } else {
       const timer = setInterval(this.handleTick, 1000);
       this.setState({ timer, running: true });
@@ -62,6 +69,14 @@ class App extends Component {
     }
   }
 
+  playBeep() {
+    this.setState({ beep: this.state.beep + 1});
+  }
+
+  handleBeepStopped = () => {
+    this.setState({ beep: this.state.beep - 1});
+  }
+
   render() {
     const { secsCurrent, running, secsSelected } = this.state;
     const mins = Math.floor(secsCurrent/60);
@@ -70,6 +85,7 @@ class App extends Component {
     const secsDisplay = secs < 10 ? `0${secs}` : `${secs}`;
     const buttonStartStopLabel = running ? 'Stop' : 'Start';
     const enableReset = running || secsCurrent !== secsSelected;
+    const playBeep = this.state.beep >= 1 ? Sound.status.PLAYING : Sound.status.STOPPED;
     return (
       <div className="App">
         <Grid fluid>
@@ -109,11 +125,15 @@ class App extends Component {
                 bsStyle="primary"
                 bsSize="large"
                 block
-                disabled={secsSelected === 0 || secsCurrent === 0}
+                disabled={(secsSelected === 0 || secsCurrent === 0) && !running}
               >{buttonStartStopLabel}</Button>
             </Col>
           </Row>
         </Grid>
+        <Sound
+          url="beep.mp3"
+          playStatus={playBeep}
+          onFinishedPlaying={this.handleBeepStopped} />
       </div>
     );
   }
