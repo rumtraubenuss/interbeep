@@ -51,6 +51,7 @@ class App extends Component {
       clearInterval(this.state.timer);
       this.setState({ timer: undefined, running: false, beep: 0 });
     } else {
+      this.playBeep();
       const timer = setInterval(this.handleTick, 1000);
       this.setState({ timer, running: true });
     }
