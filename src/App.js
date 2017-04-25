@@ -2,13 +2,17 @@ import React, { Component } from 'react';
 import './App.css';
 import { Grid, Row, Col, Button, ButtonGroup } from 'react-bootstrap';
 import Sound from 'react-sound';
+import cookies from 'js-cookie';
+
+const cookieNameTime = 'ibTimeSet';
 
 class App extends Component {
   constructor(props) {
     super(props);
+    const initialSecs = parseInt(cookies.get(cookieNameTime), 10) || 10;
     this.state = {
-      secsSelected: 10,
-      secsCurrent: 10,
+      secsSelected: initialSecs,
+      secsCurrent: initialSecs,
       running: false,
       timer: undefined,
       beep: false,
@@ -61,12 +65,14 @@ class App extends Component {
     if(!this.state.running) {
       const secsNew = this.state.secsCurrent + secs;
       this.setState({ secsSelected: secsNew, secsCurrent: secsNew });
+      cookies.set(cookieNameTime, secsNew);
     }
   }
 
   handleSetTimeZero = () => {
     if(!this.state.running) {
       this.setState({ secsSelected: 0, secsCurrent: 0 });
+      cookies.set(cookieNameTime, 0);
     }
   }
 
