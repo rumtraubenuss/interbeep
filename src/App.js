@@ -16,6 +16,7 @@ class App extends Component {
       running: false,
       timer: undefined,
       beep: false,
+      intervalCount: 0,
     };
   }
 
@@ -34,13 +35,18 @@ class App extends Component {
       clearInterval(this.state.timer);
       this.setState({ timer: undefined, running: false, beep: 0 });
     }
-    this.setState({ secsCurrent: secsSelected });
+    this.setState({ secsCurrent: secsSelected, intervalCount: 0 });
+  }
+
+  handleIntervalElapsed = () => {
+    this.setState({ intervalCount: this.state.intervalCount + 1 });
   }
 
   handleTick = () => {
     const secsNew = this.state.secsCurrent - 1;
     if (secsNew === 0) {
       this.playBeep();
+      this.handleIntervalElapsed();
     }
     if (secsNew === -1) {
       this.setState({ secsCurrent: this.state.secsSelected });
@@ -85,7 +91,7 @@ class App extends Component {
   }
 
   render() {
-    const { secsCurrent, running, secsSelected } = this.state;
+    const { secsCurrent, running, secsSelected, intervalCount } = this.state;
     const mins = Math.floor(secsCurrent/60);
     const minsDisplay = mins < 10 ? `0${mins}` : `${mins}`;
     const secs = secsCurrent % 60;
@@ -99,6 +105,11 @@ class App extends Component {
           <Row>
             <Col xs={12}>
               <h2 className="text-center">{minsDisplay}:{secsDisplay}</h2>
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={12}>
+              <h2 className="text-center">{intervalCount}</h2>
             </Col>
           </Row>
           <Row>
