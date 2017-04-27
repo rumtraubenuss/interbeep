@@ -112,7 +112,7 @@ class App extends Component {
           </Row>
           <Row>
             <Col xs={12}>
-              <h2 className="text-center">{intervalCount}</h2>
+              <p className="text-center">Rounds: {intervalCount}</p>
             </Col>
           </Row>
           <Row>
