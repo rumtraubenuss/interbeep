@@ -60,6 +60,9 @@ class App extends Component {
       //TODO Move to method
       clearInterval(this.state.timer);
       this.setState({ timer: undefined, running: false, beep: 0 });
+      if (this.state.secsCurrent === 0) {
+        this.setState({ secsCurrent: this.state.secsSelected });
+      }
     } else {
       this.playBeep();
       const timer = setInterval(this.handleTick, 1000);
