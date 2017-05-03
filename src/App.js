@@ -31,11 +31,14 @@ class App extends Component {
   resetTime = () => {
     const { secsSelected } = this.state;
     if(this.state.running) {
-      //TODO Move to method
-      clearInterval(this.state.timer);
-      this.setState({ timer: undefined, running: false, beep: 0 });
+      this.stopResetInterval();
     }
     this.setState({ secsCurrent: secsSelected, intervalCount: 0 });
+  }
+
+  stopResetInterval = () => {
+      clearInterval(this.state.timer);
+      this.setState({ timer: undefined, running: false, beep: 0 });
   }
 
   handleIntervalElapsed = () => {
@@ -57,9 +60,7 @@ class App extends Component {
 
   handleStartStop = () => {
     if(this.state.running) {
-      //TODO Move to method
-      clearInterval(this.state.timer);
-      this.setState({ timer: undefined, running: false, beep: 0 });
+      this.stopResetInterval();
       if (this.state.secsCurrent === 0) {
         this.setState({ secsCurrent: this.state.secsSelected });
       }
