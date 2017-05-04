@@ -17,6 +17,7 @@ class App extends Component {
       timer: undefined,
       beep: false,
       intervalCount: 0,
+      secsPause: 0,
     };
   }
 
@@ -94,8 +95,15 @@ class App extends Component {
     this.setState({ beep: this.state.beep - 1});
   }
 
+  handleChangeSecsPause = ev => {
+    this.setState({ secsPause: ev.target.value });
+  }
+
   render() {
-    const { secsCurrent, running, secsSelected, intervalCount } = this.state;
+    const pauseTimeSelectItems = Array.from(Array(60), (_, i) => {
+      return <option key={i} value={i}>{i}</option>
+    });
+    const { secsCurrent, running, secsSelected, intervalCount, secsPause } = this.state;
     const mins = Math.floor(secsCurrent/60);
     const minsDisplay = mins < 10 ? `0${mins}` : `${mins}`;
     const secs = secsCurrent % 60;
@@ -114,6 +122,13 @@ class App extends Component {
           <Row>
             <Col xs={12}>
               <p className="text-center">Rounds: {intervalCount}</p>
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={12} className="text-center">
+              <select value={secsPause} onChange={this.handleChangeSecsPause}>
+                {pauseTimeSelectItems}
+              </select>
             </Col>
           </Row>
           <Row>
