@@ -75,14 +75,14 @@ class App extends Component {
     if(!this.state.running) {
       const secsNew = this.state.secsCurrent + secs;
       this.setState({ secsSelected: secsNew, secsCurrent: secsNew });
-      cookies.set(cookieNameTime, secsNew);
+      cookies.set(cookieNameTime, secsNew, { expires: 365 });
     }
   }
 
   handleSetTimeZero = () => {
     if(!this.state.running) {
       this.setState({ secsSelected: 0, secsCurrent: 0 });
-      cookies.set(cookieNameTime, 0);
+      cookies.set(cookieNameTime, 0, { expires: 365 });
     }
   }
 
