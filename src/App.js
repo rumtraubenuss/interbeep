@@ -5,11 +5,13 @@ import Sound from 'react-sound';
 import cookies from 'js-cookie';
 
 const cookieNameTime = 'ibTimeSet';
+const cookieNamePause = 'ibPauseSet';
 
 class App extends Component {
   constructor(props) {
     super(props);
     const initialSecs = parseInt(cookies.get(cookieNameTime), 10) || 10;
+    const initialPause = parseInt(cookies.get(cookieNamePause), 10) || 0;
     this.state = {
       secsSelected: initialSecs,
       secsCurrent: initialSecs,
@@ -17,7 +19,7 @@ class App extends Component {
       timer: undefined,
       beep: false,
       intervalCount: 0,
-      secsPause: 0,
+      secsPause: initialPause,
     };
   }
 
@@ -97,6 +99,7 @@ class App extends Component {
 
   handleChangeSecsPause = ev => {
     this.setState({ secsPause: ev.target.value });
+    cookies.set(cookieNamePause, ev.target.value, { expires: 365 });
   }
 
   render() {
