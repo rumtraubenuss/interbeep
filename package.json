@@ -6,6 +6,7 @@
     "react-scripts": "0.9.5"
   },
   "dependencies": {
+    "classnames": "^2.2.5",
     "js-cookie": "^2.1.4",
     "react": "^15.4.2",
     "react-bootstrap": "^0.30.7",

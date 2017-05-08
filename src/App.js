@@ -3,6 +3,7 @@ import './App.css';
 import { Grid, Row, Col, Button, ButtonGroup } from 'react-bootstrap';
 import Sound from 'react-sound';
 import cookies from 'js-cookie';
+import classNames from 'classnames';
 
 const cookieNameTime = 'ibTimeSet';
 const cookieNamePause = 'ibPauseSet';
@@ -120,12 +121,19 @@ class App extends Component {
     const buttonStartStopLabel = running ? 'Stop' : 'Start';
     const enableReset = running || secsCurrent !== secsSelected;
     const playBeep = this.state.beep >= 1 ? Sound.status.PLAYING : Sound.status.STOPPED;
+    const classesTime = classNames(
+      'text-center',
+      {
+        'pause-mode': this.state.isPauseRound,
+        'normal-mode': !this.state.isPauseRound,
+      },
+    );
     return (
       <div className="App">
         <Grid fluid>
           <Row>
             <Col xs={12}>
-              <h2 className="text-center">{minsDisplay}:{secsDisplay}</h2>
+              <h2 className={classesTime}>{minsDisplay}:{secsDisplay}</h2>
             </Col>
           </Row>
           <Row>
