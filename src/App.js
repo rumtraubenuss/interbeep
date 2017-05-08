@@ -20,6 +20,7 @@ class App extends Component {
       beep: false,
       intervalCount: 0,
       secsPause: initialPause,
+      isPauseRound: false,
     };
   }
 
@@ -36,7 +37,7 @@ class App extends Component {
     if(this.state.running) {
       this.stopResetInterval();
     }
-    this.setState({ secsCurrent: secsSelected, intervalCount: 0 });
+    this.setState({ secsCurrent: secsSelected, intervalCount: 0, isPauseRound: false });
   }
 
   stopResetInterval = () => {
@@ -45,17 +46,22 @@ class App extends Component {
   }
 
   handleIntervalElapsed = () => {
+    if (this.state.isPauseRound) return;
     this.setState({ intervalCount: this.state.intervalCount + 1 });
   }
 
   handleTick = () => {
     const secsNew = this.state.secsCurrent - 1;
     if (secsNew === 0) {
+      const isPauseRound = !this.state.isPauseRound;
       this.playBeep();
       this.handleIntervalElapsed();
+      this.setState({ isPauseRound });
     }
     if (secsNew === -1) {
-      this.setState({ secsCurrent: this.state.secsSelected });
+      const { secsPause, secsSelected } = this.state;
+      const secsCurrent = this.state.isPauseRound ? secsPause : secsSelected;
+      this.setState({ secsCurrent });
       return;
     }
     this.setState({ secsCurrent: secsNew });
