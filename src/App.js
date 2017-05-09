@@ -19,7 +19,7 @@ class App extends Component {
       running: false,
       timer: undefined,
       beep: false,
-      intervalCount: 0,
+      intervalCount: 1,
       secsPause: initialPause,
       isPauseRound: false,
     };
@@ -38,7 +38,7 @@ class App extends Component {
     if(this.state.running) {
       this.stopResetInterval();
     }
-    this.setState({ secsCurrent: secsSelected, intervalCount: 0, isPauseRound: false });
+    this.setState({ secsCurrent: secsSelected, intervalCount: 1, isPauseRound: false });
   }
 
   stopResetInterval = () => {
@@ -138,7 +138,7 @@ class App extends Component {
           </Row>
           <Row>
             <Col xs={12}>
-              <p className="text-center">Rounds: {intervalCount}</p>
+              <p className="text-center">Round: {intervalCount}</p>
             </Col>
           </Row>
           <Row>
