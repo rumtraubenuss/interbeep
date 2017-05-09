@@ -47,17 +47,23 @@ class App extends Component {
   }
 
   handleIntervalElapsed = () => {
-    if (this.state.isPauseRound) return;
-    this.setState({ intervalCount: this.state.intervalCount + 1 });
+    //if (this.state.isPauseRound) return;
+    //this.setState({ intervalCount: this.state.intervalCount + 1 });
   }
 
   handleTick = () => {
+    //if (this.state.secsCurrent === this.state.secsSelected) {
+      //this.setState({ intervalCount: this.state.intervalCount + 1 });
+    //}
     const secsNew = this.state.secsCurrent - 1;
     if (secsNew === 0) {
       const isPauseRound = !this.state.isPauseRound;
       this.playBeep();
       this.handleIntervalElapsed();
       this.setState({ isPauseRound });
+      if (!isPauseRound) {
+        this.setState({ intervalCount: this.state.intervalCount + 1 });
+      }
     }
     if (secsNew === -1) {
       const { secsPause, secsSelected } = this.state;
