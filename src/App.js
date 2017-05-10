@@ -57,7 +57,7 @@ class App extends Component {
     //}
     const secsNew = this.state.secsCurrent - 1;
     if (secsNew === 0) {
-      const isPauseRound = !!parseInt(this.state.secsPause) ? !this.state.isPauseRound : this.state.isPauseRound;
+      const isPauseRound = !!parseInt(this.state.secsPause, 10) ? !this.state.isPauseRound : this.state.isPauseRound;
       this.playBeep();
       this.handleIntervalElapsed();
       this.setState({ isPauseRound });
@@ -150,9 +150,11 @@ class App extends Component {
           </Row>
           <Row>
             <Col xs={12} className="text-center">
-              <select value={secsPause} onChange={this.handleChangeSecsPause}>
+              <p>
+                <select value={secsPause} onChange={this.handleChangeSecsPause}>
                 {pauseTimeSelectItems}
-              </select>
+                </select>
+              </p>
             </Col>
           </Row>
           <Row>
