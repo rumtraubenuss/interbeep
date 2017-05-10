@@ -57,7 +57,7 @@ class App extends Component {
     //}
     const secsNew = this.state.secsCurrent - 1;
     if (secsNew === 0) {
-      const isPauseRound = !this.state.isPauseRound;
+      const isPauseRound = !!parseInt(this.state.secsPause) ? !this.state.isPauseRound : this.state.isPauseRound;
       this.playBeep();
       this.handleIntervalElapsed();
       this.setState({ isPauseRound });
@@ -113,6 +113,7 @@ class App extends Component {
   handleChangeSecsPause = ev => {
     this.setState({ secsPause: ev.target.value });
     cookies.set(cookieNamePause, ev.target.value, { expires: 365 });
+    //this.resetTime();
   }
 
   render() {
