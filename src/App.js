@@ -46,20 +46,11 @@ class App extends Component {
       this.setState({ timer: undefined, running: false, beep: 0 });
   }
 
-  handleIntervalElapsed = () => {
-    //if (this.state.isPauseRound) return;
-    //this.setState({ intervalCount: this.state.intervalCount + 1 });
-  }
-
   handleTick = () => {
-    //if (this.state.secsCurrent === this.state.secsSelected) {
-      //this.setState({ intervalCount: this.state.intervalCount + 1 });
-    //}
     const secsNew = this.state.secsCurrent - 1;
     if (secsNew === 0) {
       const isPauseRound = !!parseInt(this.state.secsPause, 10) ? !this.state.isPauseRound : this.state.isPauseRound;
       this.playBeep();
-      this.handleIntervalElapsed();
       this.setState({ isPauseRound });
       if (!isPauseRound) {
         this.setState({ intervalCount: this.state.intervalCount + 1 });
@@ -113,7 +104,6 @@ class App extends Component {
   handleChangeSecsPause = ev => {
     this.setState({ secsPause: ev.target.value });
     cookies.set(cookieNamePause, ev.target.value, { expires: 365 });
-    //this.resetTime();
   }
 
   render() {
