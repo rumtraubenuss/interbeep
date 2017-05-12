@@ -50,7 +50,7 @@ class App extends Component {
   handleTick = () => {
     const secsNew = this.state.secsCurrent - 1;
     if (secsNew === 0) {
-      const isPauseRound = !!parseInt(this.state.secsPause, 10) ? !this.state.isPauseRound : this.state.isPauseRound;
+      const isPauseRound = !!this.state.secsPause ? !this.state.isPauseRound : this.state.isPauseRound;
       this.playBeep();
       this.setState({ isPauseRound });
       if (!isPauseRound) {
@@ -103,7 +103,7 @@ class App extends Component {
   }
 
   handleChangeSecsPause = ev => {
-    this.setState({ secsPause: ev.target.value });
+    this.setState({ secsPause: parseInt(ev.target.value, 10) });
     cookies.set(cookieNamePause, ev.target.value, { expires: 365 });
   }
 
