@@ -4,6 +4,7 @@ import { Grid, Row, Col, Button, ButtonGroup } from 'react-bootstrap';
 import Sound from 'react-sound';
 import cookies from 'js-cookie';
 import classNames from 'classnames';
+import PauseSelector from './components/pause_selector';
 
 const cookieNameTime = 'ibTimeSet';
 const cookieNamePause = 'ibPauseSet';
@@ -107,9 +108,6 @@ class App extends Component {
   }
 
   render() {
-    const pauseTimeSelectItems = Array.from(Array(60), (_, i) => {
-      return <option key={i} value={i}>{i}</option>
-    });
     const { secsCurrent, running, secsSelected, intervalCount, secsPause } = this.state;
     const mins = Math.floor(secsCurrent/60);
     const minsDisplay = mins < 10 ? `0${mins}` : `${mins}`;
@@ -141,9 +139,10 @@ class App extends Component {
           <Row>
             <Col xs={12} className="text-center">
               <p>
-                <select value={secsPause} onChange={this.handleChangeSecsPause}>
-                {pauseTimeSelectItems}
-                </select>
+                <PauseSelector
+                  {...{ secsPause }}
+                  handleChangeSecsPause={this.handleChangeSecsPause}
+                />
               </p>
             </Col>
           </Row>
