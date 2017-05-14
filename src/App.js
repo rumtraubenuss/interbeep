@@ -133,12 +133,15 @@ class App extends Component {
           </Row>
           <Row>
             <Col xs={12}>
-              <p className="text-center">Round: {intervalCount}</p>
+              <p className="text-center">
+                <strong>Round: {intervalCount}</strong>
+              </p>
             </Col>
           </Row>
           <Row>
             <Col xs={12} className="text-center">
               <p>
+                <span>Pause Seconds: </span>
                 <PauseSelector
                   {...{ secsPause }}
                   handleChangeSecsPause={this.handleChangeSecsPause}
