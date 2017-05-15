@@ -4,10 +4,18 @@ import { Grid, Row, Col, Button, ButtonGroup } from 'react-bootstrap';
 import Sound from 'react-sound';
 import cookies from 'js-cookie';
 import classNames from 'classnames';
+import { createStore, combineReducers } from 'redux';
+import { Provider } from 'react-redux';
 import PauseSelector from './components/pause_selector';
+import * as reducers from './reducers';
 
 const cookieNameTime = 'ibTimeSet';
 const cookieNamePause = 'ibPauseSet';
+
+const store = createStore(
+  combineReducers({ ...reducers }),
+  {}
+);
 
 class App extends Component {
   constructor(props) {
@@ -124,72 +132,74 @@ class App extends Component {
       },
     );
     return (
-      <div className="App">
-        <Grid fluid>
-          <Row>
-            <Col xs={12}>
-              <h2 className={classesTime}>{minsDisplay}:{secsDisplay}</h2>
-            </Col>
-          </Row>
-          <Row>
-            <Col xs={12}>
-              <p className="text-center">
-                <strong>Round: {intervalCount}</strong>
-              </p>
-            </Col>
-          </Row>
-          <Row>
-            <Col xs={12} className="text-center">
-              <p>
-                <span>Pause Seconds: </span>
-                <PauseSelector
-                  {...{ secsPause }}
-                  handleChangeSecsPause={this.handleChangeSecsPause}
-                />
-              </p>
-            </Col>
-          </Row>
-          <Row>
-            <Col xs={12}>
-              <ButtonGroup justified>
-                <ButtonGroup>
-                  <Button disabled={running} onClick={this.handleChangeMin}>+Min</Button>
+      <Provider store={store}>
+        <div className="App">
+          <Grid fluid>
+            <Row>
+              <Col xs={12}>
+                <h2 className={classesTime}>{minsDisplay}:{secsDisplay}</h2>
+              </Col>
+            </Row>
+            <Row>
+              <Col xs={12}>
+                <p className="text-center">
+                  <strong>Round: {intervalCount}</strong>
+                </p>
+              </Col>
+            </Row>
+            <Row>
+              <Col xs={12} className="text-center">
+                <p>
+                  <span>Pause Seconds: </span>
+                  <PauseSelector
+                    {...{ secsPause }}
+                    handleChangeSecsPause={this.handleChangeSecsPause}
+                  />
+                </p>
+              </Col>
+            </Row>
+            <Row>
+              <Col xs={12}>
+                <ButtonGroup justified>
+                  <ButtonGroup>
+                    <Button disabled={running} onClick={this.handleChangeMin}>+Min</Button>
+                  </ButtonGroup>
+                  <ButtonGroup>
+                    <Button disabled={running} onClick={this.handleChangeSec}>+Sec</Button>
+                  </ButtonGroup>
+                  <ButtonGroup>
+                    <Button
+                      disabled={secsSelected === 0 || secsCurrent === 0 || running}
+                      onClick={this.handleSetTimeZero}
+                    >00:00</Button>
+                  </ButtonGroup>
+                  <ButtonGroup>
+                    <Button
+                      disabled={!enableReset}
+                      onClick={this.resetTime}
+                    >Reset</Button>
+                  </ButtonGroup>
                 </ButtonGroup>
-                <ButtonGroup>
-                  <Button disabled={running} onClick={this.handleChangeSec}>+Sec</Button>
-                </ButtonGroup>
-                <ButtonGroup>
-                  <Button
-                    disabled={secsSelected === 0 || secsCurrent === 0 || running}
-                    onClick={this.handleSetTimeZero}
-                  >00:00</Button>
-                </ButtonGroup>
-                <ButtonGroup>
-                  <Button
-                    disabled={!enableReset}
-                    onClick={this.resetTime}
-                  >Reset</Button>
-                </ButtonGroup>
-              </ButtonGroup>
-            </Col>
-          </Row>
-          <Row>
-            <Col xs={12}>
-              <Button
-                onClick={this.handleStartStop}
-                bsStyle="primary"
-                bsSize="large"
-                block
-                disabled={(secsSelected === 0 || secsCurrent === 0) && !running}
-              >{buttonStartStopLabel}</Button>
-            </Col>
-          </Row>
-        </Grid>
-        <Sound
-          url="beep.mp3"
-          playStatus={playBeep}
-          onFinishedPlaying={this.handleBeepStopped} />
-      </div>
+              </Col>
+            </Row>
+            <Row>
+              <Col xs={12}>
+                <Button
+                  onClick={this.handleStartStop}
+                  bsStyle="primary"
+                  bsSize="large"
+                  block
+                  disabled={(secsSelected === 0 || secsCurrent === 0) && !running}
+                >{buttonStartStopLabel}</Button>
+              </Col>
+            </Row>
+          </Grid>
+          <Sound
+            url="beep.mp3"
+            playStatus={playBeep}
+            onFinishedPlaying={this.handleBeepStopped} />
+        </div>
+      </Provider>
     );
   }
 }
